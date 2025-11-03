@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Simple File Organizer</title>
+    <link rel="stylesheet" href="static/fileInput.css">
+    <link rel="stylesheet" href="static/button.css">
+    <link rel="stylesheet" href="static/fileList.css">
+    <link rel="stylesheet" href="static/general.css">
+</head>
+
+<body>
+
+    <h1>Simple File Organizer</h1>
+
+    <!-- File input -->
+    <input type="file" id="fileInput" multiple>
+
+    <!-- File preview -->
+    <div id="fileList"></div>
+
+    <!-- Organize button -->
+    <div class="organizeBtn">
+        <button id="organizeBtn">Organize Files</button>
+    </div>
+
+    <!-- Sections -->
+    <div class="container">
+        <div class="file-section js-photo-click">
+            <h3>Photos</h3>
+        </div>
+
+        <div class="file-section js-video-click">
+            <h3>Videos</h3>
+        </div>
+
+        <div class="file-section js-document-click">
+            <h3>Documents</h3>
+        </div>
+
+        <div class="file-section js-program-click">
+            <h3>Programs</h3>
+        </div>
+
+        <div class="file-section js-archive-click">
+            <h3>Archives</h3>
+        </div>
+    </div>
+    <div class="file-output-container js-output-container"></div>
+
+
+
+    <!-- JSZip library (optional) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script type="module" src="scripts/script.js"></script>
+</body>
+
+</html>

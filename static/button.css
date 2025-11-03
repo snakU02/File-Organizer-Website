@@ -1,0 +1,20 @@
+/* ===== Buttons ===== */
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.organizeBtn {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}

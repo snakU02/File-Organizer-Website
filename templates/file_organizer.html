@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple File Organizer</title>
+    <!-- JSZip Library (for creating ZIP files) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #6a89cc;
+            color: white;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            width: 400px;
+        }
+
+        #drop-area {
+            border: 2px dashed white;
+            border-radius: 10px;
+            padding: 20px;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+
+        .file-list {
+            text-align: left;
+            font-size: 14px;
+            margin-top: 10px;
+            max-height: 100px;
+            overflow-y: auto;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background: white;
+            color: #333;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #eee;
+        }
+
+        .progress {
+            margin-top: 10px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: #00ffcc;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>📁 Simple File Organizer</h2>
+
+        <div id="drop-area">
+            <p>Drag & drop files here<br>or click to select</p>
+            <input type="file" id="fileInput" multiple style="display: none;">
+        </div>
+
+        <div id="fileList" class="file-list"></div>
+
+        <button id="organizeBtn">Organize Files</button>
+
+        <div class="progress">
+            <div id="progressBar" class="progress-bar"></div>
+        </div>
+        <p id="status"></p>
+    </div>
+
+
+
+    <script>
+        // Get HTML elements
+        const dropArea = document.getElementById("drop-area");
+        const fileInput = document.getElementById("fileInput");
+        const fileList = document.getElementById("fileList");
+        const organizeBtn = document.getElementById("organizeBtn");
+        const progressBar = document.getElementById("progressBar");
+        const status = document.getElementById("status");
+
+        // Store selected files
+        let files = [];
+
+        // When user clicks the drop area, open file picker
+        dropArea.addEventListener("click", () => {
+            fileInput.click();
+        });
+
+        // When user selects files using the input
+        fileInput.addEventListener("change", (event) => {
+            files = event.target.files;
+            showFiles();
+        });
+
+        // Handle drag & drop events
+        dropArea.addEventListener("dragover", (event) => {
+            event.preventDefault();
+            dropArea.style.background = "rgba(255,255,255,0.2)";
+        });
+
+        dropArea.addEventListener("dragleave", () => {
+            dropArea.style.background = "transparent";
+        });
+
+        dropArea.addEventListener("drop", (event) => {
+            event.preventDefault();
+            dropArea.style.background = "transparent";
+            files = event.dataTransfer.files;
+            showFiles();
+        });
+
+        // Show list of selected files
+        function showFiles() {
+            fileList.innerHTML = "";
+            if (files.length === 0) {
+                fileList.innerHTML = "<p>No files selected</p>";
+                return;
+            }
+            for (let file of files) {
+                const item = document.createElement("div");
+                item.textContent = file.name;
+                fileList.appendChild(item);
+            }
+        }
+
+        // Decide which folder a file belongs to
+        function getFolderName(file) {
+            if (file.type.startsWith("image/")) return "Images";
+            if (file.type.startsWith("video/")) return "Videos";
+            if (file.type.startsWith("audio/")) return "Audio";
+            if (file.type.includes("pdf") || file.type.includes("text") || file.type.includes("word"))
+                return "Documents";
+            return "Others";
+        }
+
+        // Main logic to organize and download ZIP
+        organizeBtn.addEventListener("click", async () => {
+            if (files.length === 0) {
+                alert("Please select some files first!");
+                return;
+            }
+
+            status.textContent = "Organizing files...";
+            progressBar.style.width = "30%";
+
+            const zip = new JSZip(); // Create new ZIP file
+
+            // Loop through each file
+            for (let file of files) {
+                const folderName = getFolderName(file); // Get correct folder name
+                const folder = zip.folder(folderName);  // Create folder in ZIP
+                folder.file(file.name, file);           // Add file into folder
+            }
+
+            progressBar.style.width = "70%";
+            status.textContent = "Creating ZIP file...";
+
+            // Generate ZIP and download
+            const zipContent = await zip.generateAsync({ type: "blob" });
+            progressBar.style.width = "100%";
+
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(zipContent);
+            link.download = "organized_files.zip";
+            link.click();
+
+            status.textContent = "✅ ZIP file downloaded!";
+            progressBar.style.width = "0%";
+            fileList.innerHTML = "";
+            files = [];
+        });
+    </script>
+</body>
+
+</html>

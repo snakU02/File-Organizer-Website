@@ -1,0 +1,32 @@
+/* ===== File list & sections ===== */
+.file-section {
+    background-color: #fff;
+    padding: 5px 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+    transition: box-shadow 0.2s, transform 0.2s ease;
+    /* add transform transition */
+}
+
+.file-section:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transform: translate(5px, -5px);
+    /* move to right & up */
+}
+
+.file-section:active {
+    background-color: #e7e7e7;
+}
+
+h3 {
+    margin: 0;
+}
+
+.file-output-container {
+    background-color: #fff;
+    padding: 5px 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+}
