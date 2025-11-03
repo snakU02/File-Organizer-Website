@@ -3,18 +3,30 @@
 
 <head>
     <title>Simple File Organizer</title>
-    <link rel="stylesheet" href="static/fileInput.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="static/main.css">
     <link rel="stylesheet" href="static/button.css">
     <link rel="stylesheet" href="static/fileList.css">
     <link rel="stylesheet" href="static/general.css">
 </head>
 
 <body>
+    <div class="logo-title"><img src="icons/file-organizer-high-resolution-logo-transparent.png" class="icon">
+        <h1>Simple File Organizer</h1>
+    </div>
 
-    <h1>Simple File Organizer</h1>
 
-    <!-- File input -->
-    <input type="file" id="fileInput" multiple>
+    <!-- File Upload Section -->
+    <div class="file-upload">
+        <label for="fileInput" class="upload-box">
+            <div class="upload-content">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <p>Click to upload or drag files here</p>
+                <span>Supports multiple files</span>
+            </div>
+        </label>
+        <input type="file" id="fileInput" multiple>
+    </div>
 
     <!-- File preview -->
     <div id="fileList"></div>

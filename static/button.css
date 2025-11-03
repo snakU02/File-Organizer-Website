@@ -1,16 +1,27 @@
 /* ===== Buttons ===== */
 button {
-    background-color: #007bff;
+    background: linear-gradient(135deg, #007bff, #0095ff);
     color: white;
     border: none;
-    padding: 6px 12px;
+    padding: 8px 15px;
     border-radius: 6px;
     cursor: pointer;
+    font-size: 14px;
     transition: background-color 0.2s;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+
 }
 
 button:hover {
-    background-color: #0056b3;
+    transform: scale(1.05);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.18);
+    background: linear-gradient(135deg, #006cdf, #007bff);
+}
+
+button:active {
+    transform: scale(0.95);
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
 }
 
 .organizeBtn {

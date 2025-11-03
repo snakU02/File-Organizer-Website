@@ -1,0 +1,74 @@
+/* ===== File input ===== */
+.icon {
+    height: 70px;
+    margin-right: 3px;
+}
+
+.logo-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+#fileInput {
+    display: none;
+}
+
+.file-upload {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.upload-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    height: 180px;
+    border: 2px dashed #ccc;
+    margin-bottom: 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    background-color: #f9f9f9;
+    transition: all 0.3s ease;
+    /*ease = start slow, speed up in the middle, slow down at the end*/
+}
+
+.upload-box:hover {
+    border-color: #3b82f6;
+    background-color: #eef6ff;
+    color: #3b82f6;
+    transform: scale(1.03);
+    /*cale(1.03) makes the element slightly bigger — like a gentle zoom.*/
+}
+
+.upload-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.upload-content p {
+    margin: 0;
+    font-weight: 600;
+}
+
+.upload-content span {
+    font-size: 12px;
+    color: #999;
+}
+
+#fileList {
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    column-gap: 10px;
+}
