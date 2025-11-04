@@ -58,5 +58,3 @@ export const archiveFileTypes = [
     "bz2",
     "iso"
 ];
-
-export const otherTypes = [];

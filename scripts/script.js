@@ -4,7 +4,6 @@ import {
     videoFileTypes,
     programFileTypes,
     archiveFileTypes,
-    otherTypes
 } from "./fileTypes.js";
 
 const fileInput = document.getElementById('fileInput');
@@ -24,23 +23,45 @@ fileInput.addEventListener('change', () => {
 });
 
 function checkFileType(type) {
-    if (type === 'photos') {
-        filteredFiles = storedFiles.filter(file =>
-            imageFileTypes.some(filetype => file.name.endsWith(filetype)));
-    } else if (type === 'videos') {
-        filteredFiles = storedFiles.filter(file =>
-            videoFileTypes.some(filetype => file.name.endsWith(filetype)));
-    } else if (type === 'documents') {
-        filteredFiles = storedFiles.filter(file =>
-            documentFileTypes.some(filetype => file.name.endsWith(filetype)));
-    } else if (type === 'programs') {
-        filteredFiles = storedFiles.filter(file =>
-            programFileTypes.some(filetype => file.name.endsWith(filetype)));
-    } else if (type === 'archives') {
-        filteredFiles = storedFiles.filter(file =>
-            archiveFileTypes.some(filetype => file.name.endsWith(filetype)));
-    }
 
+    filteredFiles = storedFiles.filter(file => {
+        const lowCaseFileName = file.name.toLowerCase();
+
+        if (type === 'photos') {
+            return imageFileTypes.some(filetype => lowCaseFileName.endsWith(filetype));
+        } else if (type === 'videos') {
+            return videoFileTypes.some(filetype => lowCaseFileName.endsWith(filetype));
+        } else if (type === 'documents') {
+            return documentFileTypes.some(filetype => lowCaseFileName.endsWith(filetype));
+        } else if (type === 'programs') {
+            return programFileTypes.some(filetype => lowCaseFileName.endsWith(filetype));
+        } else if (type === 'archives') {
+            return archiveFileTypes.some(filetype => lowCaseFileName.endsWith(filetype));
+        } else if (type === 'others') {
+
+            // This part checks if the file is a photo, video, document, program, or archive.
+            // The `.some()` function checks if the file name ends with any of the extensions in the list.
+            // For example, if file.name = "cat.jpg", and imageFileTypes = ['.jpg', '.png'],
+            // then `imageFileTypes.some(filetype => file.name.endsWith(filetype))` will return TRUE.
+            if (
+                imageFileTypes.some(filetype => lowCaseFileName.endsWith(filetype)) || // Is it a photo file?
+                videoFileTypes.some(filetype => lowCaseFileName.endsWith(filetype)) || // Is it a video file?
+                documentFileTypes.some(filetype => lowCaseFileName.endsWith(filetype)) || // Is it a document file?
+                programFileTypes.some(filetype => lowCaseFileName.endsWith(filetype)) || // Is it a program file?
+                archiveFileTypes.some(filetype => lowCaseFileName.endsWith(filetype)) // Is it an archive file?
+            ) {
+                // If the file matches ANY of these types (photo, video, etc.),
+                // we do NOT want to include it in the "Others" list.
+                // So we return false → meaning "don't keep this file".
+                return false;
+            } else {
+                // If the file did NOT match any of the types above,
+                // then it belongs in the "Others" category.
+                // So we return true → meaning "keep this file in the filtered list".
+                return true;
+            }
+        }
+    });
 
     if (filteredFiles.length === 0) {
         outputContainer.innerHTML = `<p>No ${type} found</p>`;
@@ -142,6 +163,10 @@ document.querySelector('.js-program-click').addEventListener('click', () => {
 document.querySelector('.js-archive-click').addEventListener('click', () => {
     currentType = 'archives';
     checkFileType('archives')
+});
+document.querySelector('.js-other-click').addEventListener('click', () => {
+    currentType = 'others';
+    checkFileType('others');
 });
 
 
