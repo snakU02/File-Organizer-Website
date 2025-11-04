@@ -4,6 +4,7 @@ import {
     videoFileTypes,
     programFileTypes,
     archiveFileTypes,
+    musicFileTypes
 } from "./fileTypes.js";
 
 const fileInput = document.getElementById('fileInput');
@@ -31,6 +32,8 @@ function checkFileType(type) {
             return imageFileTypes.some(filetype => lowCaseFileName.endsWith(filetype));
         } else if (type === 'videos') {
             return videoFileTypes.some(filetype => lowCaseFileName.endsWith(filetype));
+        } else if (type === 'musics') {
+            return musicFileTypes.some(filetype => lowCaseFileName.endsWith(filetype));
         } else if (type === 'documents') {
             return documentFileTypes.some(filetype => lowCaseFileName.endsWith(filetype));
         } else if (type === 'programs') {
@@ -46,6 +49,7 @@ function checkFileType(type) {
             if (
                 imageFileTypes.some(filetype => lowCaseFileName.endsWith(filetype)) || // Is it a photo file?
                 videoFileTypes.some(filetype => lowCaseFileName.endsWith(filetype)) || // Is it a video file?
+                musicFileTypes.some(filetype => lowCaseFileName.endsWith(filetype)) ||
                 documentFileTypes.some(filetype => lowCaseFileName.endsWith(filetype)) || // Is it a document file?
                 programFileTypes.some(filetype => lowCaseFileName.endsWith(filetype)) || // Is it a program file?
                 archiveFileTypes.some(filetype => lowCaseFileName.endsWith(filetype)) // Is it an archive file?
@@ -98,6 +102,7 @@ document.getElementById('organizeBtn').addEventListener('click', async () => {
     //Create subfolders inside the zip
     const photoFolder = zip.folder("Photos");
     const videoFolder = zip.folder("Videos");
+    const musicFolder = zip.folder("Musics");
     const docFolder = zip.folder("Documents");
     const progFolder = zip.folder("Programs");
     const archiveFolder = zip.folder("Archives");
@@ -112,6 +117,8 @@ document.getElementById('organizeBtn').addEventListener('click', async () => {
             photoFolder.file(file.name, file);
         } else if (videoFileTypes.some(fileType => lowCaseFileName.endsWith(fileType))) {
             videoFolder.file(file.name, file);
+        } else if (musicFileTypes.some(fileType => lowCaseFileName.endsWith(fileType))) {
+            musicFolder.file(file.name, file);
         } else if (documentFileTypes.some(fileType => lowCaseFileName.endsWith(fileType))) {
             docFolder.file(file.name, file);
         } else if (programFileTypes.some(fileType => lowCaseFileName.endsWith(fileType))) {
@@ -151,6 +158,10 @@ document.querySelector('.js-photo-click').addEventListener('click', () => {
 document.querySelector('.js-video-click').addEventListener('click', () => {
     currentType = 'videos';
     checkFileType('videos')
+});
+document.querySelector('.js-music-click').addEventListener('click', () => {
+    currentType = 'musics';
+    checkFileType('musics')
 });
 document.querySelector('.js-document-click').addEventListener('click', () => {
     currentType = 'documents';
