@@ -151,12 +151,27 @@ document.getElementById('organizeBtn').addEventListener('click', async () => {
 
 });
 
-// ===== ACTIVE SECTION HIGHLIGHT =====
-const allSections = document.querySelectorAll('.file-section');
+// ==ACTIVE SECTION HIGHLIGHT==
 
+//Select all file sections
+const allSections = document.querySelectorAll('.file-section');
+//Loop through each section and add listener each
 allSections.forEach(section => {
+    //Add a click event listener to each section
     section.addEventListener('click', () => {
+
+        // Remove the "active" class from ALL sections first
+        // This ensures that only ONE section looks selected at a time.
+        allSections.forEach(sec => sec.classList.remove('active'));
+
+        // Add the "active" class to the section that was just clicked
+        // This visually highlights the selected section (using CSS styles).
+        section.classList.add('active');
+
+        // Get the custom "data-type" value from the clicked section
+        // Example: if <div data-type="photos"> → type = "photos"
         const type = section.dataset.type;
+
         currentType = type;
         checkFileType(type);
         console.log(type);
