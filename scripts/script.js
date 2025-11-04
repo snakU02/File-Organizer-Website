@@ -151,34 +151,14 @@ document.getElementById('organizeBtn').addEventListener('click', async () => {
 
 });
 
-document.querySelector('.js-photo-click').addEventListener('click', () => {
-    currentType = 'photos';
-    checkFileType('photos')
-});
-document.querySelector('.js-video-click').addEventListener('click', () => {
-    currentType = 'videos';
-    checkFileType('videos')
-});
-document.querySelector('.js-music-click').addEventListener('click', () => {
-    currentType = 'musics';
-    checkFileType('musics')
-});
-document.querySelector('.js-document-click').addEventListener('click', () => {
-    currentType = 'documents';
-    checkFileType('documents')
-});
-document.querySelector('.js-program-click').addEventListener('click', () => {
-    currentType = 'programs';
-    checkFileType('programs')
-});
-document.querySelector('.js-archive-click').addEventListener('click', () => {
-    currentType = 'archives';
-    checkFileType('archives')
-});
-document.querySelector('.js-other-click').addEventListener('click', () => {
-    currentType = 'others';
-    checkFileType('others');
-});
+// ===== ACTIVE SECTION HIGHLIGHT =====
+const allSections = document.querySelectorAll('.file-section');
 
-
-
+allSections.forEach(section => {
+    section.addEventListener('click', () => {
+        const type = section.dataset.type;
+        currentType = type;
+        checkFileType(type);
+        console.log(type);
+    });
+});
