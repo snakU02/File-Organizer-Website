@@ -1,4 +1,11 @@
-import { imageFileTypes, documentFileTypes, videoFileTypes, programFileTypes, archiveFileTypes } from "./fileTypes.js";
+import {
+    imageFileTypes,
+    documentFileTypes,
+    videoFileTypes,
+    programFileTypes,
+    archiveFileTypes,
+    otherTypes
+} from "./fileTypes.js";
 
 const fileInput = document.getElementById('fileInput');
 const fileList = document.getElementById('fileList');
@@ -63,16 +70,79 @@ function deleteBtn() {
         });
     });
 }
+//make the function async to use the 'await'
+document.getElementById('organizeBtn').addEventListener('click', async () => {
+    //create a new “zip folder” in memory using the JSZip library
+    const zip = new JSZip();
+    //Create subfolders inside the zip
+    const photoFolder = zip.folder("Photos");
+    const videoFolder = zip.folder("Videos");
+    const docFolder = zip.folder("Documents");
+    const progFolder = zip.folder("Programs");
+    const archiveFolder = zip.folder("Archives");
+    const otherFolder = zip.folder("Others");
 
+    //loop through every file the user uploaded
+    storedFiles.forEach((file) => {
+        //make it lowercase
+        const lowCaseFileName = file.name.toLowerCase();
+
+        if (imageFileTypes.some(fileType => lowCaseFileName.endsWith(fileType))) {
+            photoFolder.file(file.name, file);
+        } else if (videoFileTypes.some(fileType => lowCaseFileName.endsWith(fileType))) {
+            videoFolder.file(file.name, file);
+        } else if (documentFileTypes.some(fileType => lowCaseFileName.endsWith(fileType))) {
+            docFolder.file(file.name, file);
+        } else if (programFileTypes.some(fileType => lowCaseFileName.endsWith(fileType))) {
+            progFolder.file(file.name, file);
+        } else if (archiveFileTypes.some(fileType => lowCaseFileName.endsWith(fileType))) {
+            archiveFolder.file(file.name, file);
+        } else {
+            otherFolder.file(file.name, file);
+        }
+    });
+
+    /*
+    zip.generateAsync() compresses everything into one file.
+    { type: "blob" } means “make it as a binary file” that the browser can download.
+    Use await because this process can take some time.
+    */
+    const content = await zip.generateAsync({ type: "blob" });
+
+    /*
+    This line comes from the FileSaver.js library.
+    It triggers a “save as…” download of the zip we just made.
+    content → the zip data we built
+    "Organized_Files.zip" → the name of the downloaded file
+    */
+    saveAs(content, "Organize-File.zip");
+
+    //clear 
+    storedFiles = [];
+    filteredFiles = [];
+
+});
 
 document.querySelector('.js-photo-click').addEventListener('click', () => {
     currentType = 'photos';
     checkFileType('photos')
 });
-document.querySelector('.js-video-click').addEventListener('click', () => { checkFileType('videos') });
-document.querySelector('.js-document-click').addEventListener('click', () => { checkFileType('documents') });
-document.querySelector('.js-program-click').addEventListener('click', () => { checkFileType('programs') });
-document.querySelector('.js-archive-click').addEventListener('click', () => { checkFileType('archives') });
+document.querySelector('.js-video-click').addEventListener('click', () => {
+    currentType = 'videos';
+    checkFileType('videos')
+});
+document.querySelector('.js-document-click').addEventListener('click', () => {
+    currentType = 'documents';
+    checkFileType('documents')
+});
+document.querySelector('.js-program-click').addEventListener('click', () => {
+    currentType = 'programs';
+    checkFileType('programs')
+});
+document.querySelector('.js-archive-click').addEventListener('click', () => {
+    currentType = 'archives';
+    checkFileType('archives')
+});
 
 
 
