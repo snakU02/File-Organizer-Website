@@ -111,7 +111,6 @@ function loadingOutput() {
         <div class="progress-container">
             <div class="progress-bar">
                 <div class="progress-fill">
-                    Organizing your files...
                 </div>
             </div>
         </div>
@@ -130,6 +129,8 @@ document.getElementById('organizeBtn').addEventListener('click', async () => {
         return;
     }
     loadingOutput();
+
+    const progressFill = document.querySelector('.progress-fill');
 
     //create a new “zip folder” in memory using the JSZip library
     const zip = new JSZip();
@@ -163,13 +164,27 @@ document.getElementById('organizeBtn').addEventListener('click', async () => {
             otherFolder.file(file.name, file);
         }
     });
-
     /*
     zip.generateAsync() compresses everything into one file.
     { type: "blob" } means “make it as a binary file” that the browser can download.
     Use await because this process can take some time.
+    
+    This tool from JSZip to track the progress using .percent, if percentData only,
+    it shows whole data like the file name and the percentage. 
+    Instead of using automatic keyframs use this to manually move based on how much of the ZIP file is processed.
+    (percentData) => {
+        console.log(percentData.percent); // shows how many % done
+    });
     */
-    const content = await zip.generateAsync({ type: "blob" });
+    const content = await zip.generateAsync({ type: "blob" }, (percentData) => {
+        const percent = Math.round(percentData.percent);
+        progressFill.style.width = `${percent}%`;
+        progressFill.textContent = `Organizing your file...${percent}%`;
+        if (percent === 100) {
+            progressFill.textContent = `✔ Organizing Complete!`;
+        }
+    });
+
 
     /*
     This line comes from the FileSaver.js library.
