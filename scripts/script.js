@@ -18,8 +18,11 @@ fileInput.addEventListener('change', () => {
     const files = fileInput.files;
     storedFiles = Array.from(fileInput.files);
     console.log(storedFiles);
-    if (files.length === 0) {
-        fileList.textContent = 'No files selected';
+    if (files.length > 0) {
+        fileList.innerHTML = `<p>(${files.length})  file(s) ready to organize</p>`;
+    } else {
+        fileList.innerHTML = `<p>${files.length} file(s) found</p>`;
+
     }
 });
 
@@ -69,6 +72,11 @@ function checkFileType(type) {
 
     if (filteredFiles.length === 0) {
         outputContainer.innerHTML = `<p>No ${type} found</p>`;
+        // 'return' immediately stops this function here.
+        // That means the code below this line will NOT run.
+        // This prevents the program from trying to display a list
+        // when there are no files to show.
+        return;
     }
 
     let html = '';
