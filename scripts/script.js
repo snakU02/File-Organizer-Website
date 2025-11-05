@@ -14,6 +14,8 @@ const outputContainer = document.querySelector('.js-output-container');
 let storedFiles = [];
 let filteredFiles = [];
 let currentType = '';
+let noFileMessageTimer;
+
 fileInput.addEventListener('change', () => {
     const files = fileInput.files;
     storedFiles = Array.from(fileInput.files);
@@ -103,8 +105,32 @@ function deleteBtn() {
         });
     });
 }
+
+function loadingOutput() {
+    fileList.innerHTML = `
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill">
+                    Organizing your files...
+                </div>
+            </div>
+        </div>
+        `;
+}
 //make the function async to use the 'await'
 document.getElementById('organizeBtn').addEventListener('click', async () => {
+    if (storedFiles.length === 0) {
+        fileList.innerHTML = `<p>Please upload some files first.</p>`;
+
+        clearTimeout(noFileMessageTimer);
+
+        noFileMessageTimer = setTimeout(() => {
+            fileList.textContent = ``;
+        }, 2000);
+        return;
+    }
+    loadingOutput();
+
     //create a new “zip folder” in memory using the JSZip library
     const zip = new JSZip();
     //Create subfolders inside the zip

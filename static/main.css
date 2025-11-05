@@ -19,6 +19,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-bottom: 15px;
 }
 
 .upload-box {
@@ -28,7 +29,6 @@
     width: 300px;
     height: 180px;
     border: 2px dashed #ccc;
-    margin-bottom: 10px;
     border-radius: 20px;
     cursor: pointer;
     background-color: #f9f9f9;
@@ -71,4 +71,57 @@
     flex-direction: row;
     justify-content: center;
     column-gap: 10px;
+}
+
+/* Container to center the bar */
+.progress-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+}
+
+/* Outer bar frame */
+.progress-bar {
+    width: 250px;
+    height: 12px;
+    border: 2px solid #4f93ff;
+    border-radius: 20px;
+    overflow: hidden;
+    /* overflow: hidden; If any part of the child element goes outside this box, hide it (don’t show it).
+    .progress-fill - is the child element.
+    */
+    background: #f5f5f5;
+}
+
+/* Inner fill with text */
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(135deg, #3b82f6, #33aaff);
+    color: white;
+    text-align: center;
+    line-height: 10px;
+    /* text-align: center; → centers the text horizontally
+    line-height: 25px; → centers the text vertically*/
+    font-size: 9px;
+    border-radius: 20px;
+    animation: fillBar 2.5s ease-in-out forwards;
+    /*ease-in-out- timing function — starts slow, speeds up, then slows again (looks natural).
+    forwards-keeps the final state (width: 101%) even after the animation finishes, 
+    if no forwards returns to its original style to width 0%*/
+}
+
+/* Animation */
+@keyframes fillBar {
+    from {
+        width: 0%;
+    }
+
+    to {
+        width: 100%;
+    }
+}
+
+.progress-bar-opacity {
+    opacity: 1;
 }
